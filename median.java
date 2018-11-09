@@ -22,9 +22,13 @@ public class Solution {
     public int median(int[] nums) {
         // write your code here
 
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
 
+        // return method1(nums);
 
-
+        return method2(nums);
     }
 
     private int method2(int[] nums) {
