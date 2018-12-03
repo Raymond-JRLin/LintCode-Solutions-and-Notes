@@ -33,8 +33,7 @@ public class Solution {
         final int x0 = 0;
         final int y0 = 0;
 
-        PriorityQueue<Point> pq = new PriorityQueue<Point>((o1, o2) ->
-            {
+        PriorityQueue<Point> pq = new PriorityQueue<Point>((o1, o2) -> {
                 if (o1.dist == o2.dist) {
                     return Integer.compare(o1.index, o2.index);
                 } else {
@@ -44,6 +43,9 @@ public class Solution {
         );
         for (int i = 0; i < restaurant.size(); i++) {
             List<Integer> list = restaurant.get(i);
+            if (list == null || list.size() != 2) {
+                continue;
+            }
             int x = list.get(0);
             int y = list.get(1);
             int d = getDist(x, y, x0, y0);
