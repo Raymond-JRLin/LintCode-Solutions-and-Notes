@@ -18,37 +18,73 @@
 
 public class Solution {
     /**
-     * @param stringIn: The original string.
-     * @param K: The length of substrings.
-     * @return: return the count of substring of length K and exactly K distinct characters.
+     * @param restaurant:
+     * @param n:
+     * @return: nothing
      */
-    public int KSubstring(String stringIn, int K) {
+    public List<List<Integer>> nearestRestaurant(List<List<Integer>> restaurant, int n) {
         // Write your code here
-        if (stringIn == null || stringIn.length() < K) {
-            return 0;
+        if (n < 1 || restaurant == null || restaurant.size() == 0 || n > restaurant.size()) {
+            return Collections.emptyList();
         }
 
-        return mytry(stringIn, K);
+        return mytry(restaurant, n);
     }
 
-    private int mytry(String s, int k) {
-        // O(N) time and O(N) space
-        int n = s.length();
-        Set<String> result = new HashSet<>();
-        Set<Character> set = new HashSet<>();
-        for (int i = 0; i < n - k + 1; i++) {
-            int j = 0;
-            while (j < k) {
-                if (!set.add(s.charAt(i + j))) {
-                    break;
+    private List<List<Integer>> mytry(List<List<Integer>> restaurant, int n) {
+        final int x0 = 0;
+        final int y0 = 0;
+
+        PriorityQueue<Point> pq = new PriorityQueue<Point>((o1, o2) -> {
+                if (o1.dist == o2.dist) {
+                    return Integer.compare(o1.index, o2.index);
+                } else {
+                    return Integer.compare(o2.dist, o1.dist);
                 }
-                j++;
             }
-            if (set.size() == k) {
-                result.add(s.substring(i, i + j));
+        );
+        for (int i = 0; i < restaurant.size(); i++) {
+            List<Integer> list = restaurant.get(i);
+            if (list == null || list.size() != 2) {
+                continue;
             }
-            set.clear(); // 如果没有这句， 或者把创建 set 的语句放在 for loop 内部， 则会 MLE
+            int x = list.get(0);
+            int y = list.get(1);
+            int d = getDist(x, y, x0, y0);
+            Point point = new Point(x, y, d, i);
+            pq.offer(point);
+            if (pq.size() > n) {
+                pq.poll();
+            }
         }
-        return result.size();
+
+        int furthest = pq.peek().dist;
+        List<List<Integer>> result = new ArrayList<>();
+        for (List<Integer> curr : restaurant) {
+            int d = getDist(curr.get(0), curr.get(1), x0, y0);
+            if (d <= furthest) {
+                result.add(new ArrayList<>(curr));
+            }
+            if (result.size() == n) {
+                break;
+            }
+        }
+        return result;
+    }
+    private int getDist(int x1, int y1, int x2, int y2) {
+        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    }
+    private class Point {
+        private int x;
+        private int y;
+        private int index;
+        private int dist;
+
+        public Point(int x, int y, int d, int i) {
+            this.x = x;
+            this.y = y;
+            this.dist = d;
+            this.index = i;
+        }
     }
 }
