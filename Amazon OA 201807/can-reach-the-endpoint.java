@@ -25,7 +25,51 @@ public class Solution {
 
         // return mytry(map);
 
-        return method2(map);
+        // return method2(map);
+
+        return method3(map);
+    }
+
+    private boolean method3(int[][] map) {
+        // DP
+        int n = map.length;
+        int m = map[0].length;
+        // definition: f[i][j] = if we can achieve this position
+        boolean[][] f = new boolean[n][m];
+        // initialization
+        f[0][0] = true;
+        for (int i = 1; i < n; i++) {
+            f[i][0] = f[i - 1][0] && map[i][0] != 0;
+            if (!f[i][0]) {
+                break;
+            }
+            if (map[i][0] == 9 && f[i][0]) {
+                return true;
+            }
+        }
+        for (int j = 1; j < m; j++) {
+            f[0][j] = f[0][j - 1] && map[0][j] != 0;
+            if (!f[0][j]) {
+                break;
+            }
+            if (map[0][j] == 9 && f[0][j]) {
+                return true;
+            }
+        }
+        // DP
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (map[i][j] == 0) {
+                    continue;
+                }
+                f[i][j] = f[i - 1][j] || f[i][j - 1];
+                if (f[i][j] && map[i][j] == 9) {
+                    return true;
+                }
+            }
+        }
+        // result
+        return false;
     }
 
     private boolean method2(int[][] map) {
