@@ -16,6 +16,7 @@
 // Answer: 2
 // substrings: ["bac", "cab"]
 
+
 public class Solution {
     /**
      * @param stringIn: The original string.
@@ -28,7 +29,54 @@ public class Solution {
             return 0;
         }
 
-        return mytry(stringIn, K);
+        // return mytry(stringIn, K);
+
+        return method2(stringIn, K);
+    }
+
+    private int method2(String s, int k) {
+        // sliding window
+        // O(N) time and O(256) space
+        int n = s.length();
+        Set<String> result = new HashSet<>();
+        int[] counts = new int[256];
+        int distinct = 0; // # distinct char
+        // first k
+        for (int i = 0; i < k; i++) {
+            int pos = (int) s.charAt(i);
+            counts[pos]++;
+            if (counts[pos] == 1) {
+                distinct++;
+            } else if (counts[pos] == 2) {
+                distinct--;
+            }
+        }
+        if (distinct == k) {
+            result.add(s.substring(0, k));
+        }
+        for (int i = k; i < n; i++) {
+            // new adding ending char
+            int right = (int) s.charAt(i);
+            counts[right]++;
+            if (counts[right] == 1) {
+                distinct++;
+            } else if (counts[right] == 2) {
+                distinct--;
+            }
+            // to-be deleting starting char
+            int left = (int) s.charAt(i - k);
+            counts[left]--;
+            if (counts[left] == 0) {
+                distinct--;
+            } else if (counts[left] == 1) {
+                distinct++;
+            }
+            if (distinct == k) {
+                // new substring,  注意范围
+                result.add(s.substring(i + 1 - k, i + 1));
+            }
+        }
+        return result.size();
     }
 
     private int mytry(String s, int k) {
