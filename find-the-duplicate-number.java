@@ -83,6 +83,7 @@ public class Solution {
         int slow = nums[0];
         int fast = nums[nums[0]];
         // 和 LinkedList 不太相同的是， 停下来的时候要是 slow 和 fast 相等， 那么初始值就要不一样了， 相当于 fast 多走了一步， 之后在找环的入口的时候， 要为 0 而不是 nums[0]
+        // 我自己的理解是： fast 在一开始多走了， 所以相当于它相遇时候的总路程少了一步， 或者说在环的追击过程中， fast 抢先一步遇到 slow， 这样子， 相遇的点就会比两者同时从 0 开始的时候更靠前一步， 即远离相遇点一步， 这时候让 slow 退后一步开始， 再相遇时才会正好是相遇点
         while (slow != fast) {
             slow = nums[slow];
             fast = nums[nums[fast]];
