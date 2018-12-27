@@ -35,9 +35,55 @@ public class Solution {
 
         // return method2(arrayIn);
 
-        return method2_2(arrayIn);
+        // return method2_2(arrayIn);
 
         // return method3(arrayIn);
+
+        return method4(arrayIn);
+    }
+
+    private int method4(List<Integer> arrayIn) {
+        // 和 method2_2 类似， 用 binary search 代替了 for 循环找当前 number 插入的位置
+        // 同样地， bucket 数组只记录 i 链上最后一个数， 即最小值， 同时随着 i 增大， bucket[i] 从小到大
+        int len = arrayIn.size();
+        int[] buckets = new int[len];
+        int size = 0;
+
+        for (int i = 0; i < len; i++) {
+            int width = arrayIn.get(i);
+            // System.out.println("curr check " + width);
+            if (size == 0 || buckets[size - 1] <= width) {
+                // 最后一位最小值比当前数还大， 那么没有任何一个 subsequence 可以加进去， 直接加在最后
+                buckets[size++] = width;
+                // System.out.println("add directly ");
+            } else {
+                int index = bsearch(buckets, size, width);
+                buckets[index] = width;
+                // System.out.println("insert " + index);
+            }
+
+        }
+        return size;
+    }
+    private int bsearch(int[] arr, int len, int target) {
+        int left = 0, right = len - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                return mid + 1;
+            } else if (arr[mid] < target) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        if (arr[right] <= target) {
+            return right + 1;
+        } else if (arr[left] <= target) {
+            return right;
+        } else {
+            return left;
+        }
     }
 
     /*
