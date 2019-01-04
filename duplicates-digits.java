@@ -42,6 +42,7 @@ public class Solution {
         long unique = 10L;
         String s = String.valueOf(n);
         for (int i = 1; i < s.length() - 1 && i <= 10; i++) {
+            // 注意这里 length - 1， 因为这里算的是 10 的幂次， 即 0 的个数
             curr = curr * available;
             unique += curr;
             available--;
