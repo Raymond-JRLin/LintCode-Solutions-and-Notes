@@ -73,7 +73,7 @@ public class Solution {
         }
         // check permutation
         // 其实我这里没看懂， 和 permutation 有什么关系， 我自己的理解是， 两个要能转换， 首先就是要长度一致， 在此条件下如果 start 中某个字符的个数不等于 end 中这个字符的个数， 才有可能转换过去， 类似于七巧板， 要有一个空余的空间来中转移动。 如果字符的个数都相等， 那么转换的时候都会一次性全部转换过去， 那么在不同的位置上的相同字符一定是转换不过去的
-        // 想了一下， 其实 permutation 也是这个意思吧， 就是长度一致，
+        // 想了一下， 其实 permutation 也是这个意思吧， 就是长度一致， end 和 start 有相同的 char 个数， 但是位置不同， 那么一定至少有两个 char 是相同但位置不同的， 既然是 permutation， 那么所有可选的 char 也都是一样的， 必然在转换之后， 会使得这个 char 变成另一个 end 中相同的 char， 但与 start 中变化后的这个 char 位置不同， 那么无论如何转换也是不能的了
         for (int i = 0; i < 26; i++) {
             if (map1[i] != map2[i]) {
                 return true;
